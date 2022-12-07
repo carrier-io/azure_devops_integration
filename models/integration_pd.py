@@ -1,10 +1,6 @@
-import binascii
-import logging
-from typing import Optional, List, Union
+from typing import Optional, Union
 
-from pydantic import BaseModel, EmailStr
-from pydantic.class_validators import validator
-from pydantic.fields import ModelField
+from pydantic import BaseModel
 from pylon.core.tools import log
 
 from ...integrations.models.pd.integration import SecretField

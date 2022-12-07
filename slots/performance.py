@@ -1,4 +1,4 @@
-from pylon.core.tools import log, web
+from pylon.core.tools import web
 
 
 class Slot:

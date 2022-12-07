@@ -1,12 +1,11 @@
 from typing import Optional
+
+from pydantic import ValidationError
 from pylon.core.tools import log
 from pylon.core.tools import web
-from pydantic import parse_obj_as, ValidationError
-
-from ..models.integration_pd import SecurityTestModel, PerformanceBackendTestModel
-
 from tools import rpc_tools
 
+from ..models.integration_pd import SecurityTestModel
 from ...integrations.models.pd.integration import SecretField
 
 

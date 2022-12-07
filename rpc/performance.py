@@ -1,12 +1,11 @@
 import logging
 from typing import Optional
-from pylon.core.tools import log
+
+from pydantic import ValidationError
 from pylon.core.tools import web
-from pydantic import parse_obj_as, ValidationError
+from tools import rpc_tools
 
 from ..models.integration_pd import PerformanceBackendTestModel, PerformanceUiTestModel
-
-from tools import rpc_tools, secrets_tools
 
 
 class RPC:
@@ -39,10 +38,8 @@ class RPC:
           # 'custom_fields': integration_settings['custom_fields'],  # doesn't exist in performance settings.
           'assignee': performance_settings['assignee'],
         }
-        log.info("azure_config: %s", azure_devops_config)
 
         return azure_devops_config
-
 
     @web.rpc(f'ui_performance_test_create_integration_validate_{integration_name}')
     @rpc_tools.wrap_exceptions(ValidationError)

@@ -1,8 +1,4 @@
-from pylon.core.tools import log, web
-import base64
-
-
-from ..models.integration_pd import IntegrationModel
+from pylon.core.tools import web
 
 
 class Slot:

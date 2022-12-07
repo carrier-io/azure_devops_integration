@@ -1,10 +1,7 @@
-import json
 from typing import Optional
 
-from pylon.core.tools import log
 from pylon.core.tools import web
-
-from tools import rpc_tools, secrets_tools
+from tools import rpc_tools
 
 
 class RPC:
