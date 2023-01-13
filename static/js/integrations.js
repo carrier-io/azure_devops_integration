@@ -1,6 +1,7 @@
 const AzureDevopsIntegration = {
     delimiters: ['[[', ']]'],
-    props: ['instance_name', 'display_name'],
+    props: ['instance_name', 'display_name', 'logo_src', 'section_name'],
+    emits: ['update'],
     template: `
 <div
         :id="modal_id"
@@ -123,9 +124,10 @@ const AzureDevopsIntegration = {
                 custom_fields,
                 description,
                 is_default,
-                project_id
+                project_id,
+                status
             } = this
-            return {organization, project, access_token, team, issue_type, assignee, custom_fields, description, is_default, project_id}
+            return {organization, project, access_token, team, issue_type, assignee, custom_fields, description, is_default, project_id, status}
         },
 
         modal() {
@@ -163,7 +165,7 @@ const AzureDevopsIntegration = {
                 this.is_fetching = false
                 if (response.ok) {
                     this.modal.modal('hide')
-                    location.reload()
+                    this.$emit('update', {...this.$data, section_name: this.section_name})
                 } else {
                     this.handleError(response)
                 }
@@ -193,7 +195,7 @@ const AzureDevopsIntegration = {
                 console.log(response)
                 if (response.ok) {
                     this.modal.modal('hide')
-                    location.reload()
+                    this.$emit('update', {...this.$data, section_name: this.section_name})
                 } else {
                     this.handleError(response)
                 }
@@ -207,7 +209,7 @@ const AzureDevopsIntegration = {
                 this.is_fetching = false
 
                 if (response.ok) {
-                    location.reload()
+                    this.$emit('update', {...this.$data, section_name: this.section_name})
 
                 } else {
                     this.handleError(response)
@@ -241,6 +243,7 @@ const AzureDevopsIntegration = {
             pluginName: 'azure_devops',
 
             api_base: '/api/v1/integrations/',
+            status: integration_status.success,
         })
     }
 }
