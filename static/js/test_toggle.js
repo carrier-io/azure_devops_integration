@@ -29,15 +29,24 @@ const AzureDevopsToggle = {
     },
     watch: {
         integration_data(newState, oldState) {
-            // Object.assign(this.$data, newState.settings)
-            this.set_data({...newState.settings, id: newState.id})
+            this.organization = newState.settings.organization
+            this.project = newState.settings.project
+            this.team = newState.settings.team
+            this.issue_type = newState.settings.issue_type
+            this.assignee = newState.settings.assignee
+            this.access_token = newState.settings.access_token
         }
+    },
+    computed: {
+        is_local() {
+            return !!(this.integration_data.project_id)
+        },
     },
     methods: {
         get_data() {
             if (this.is_selected) {
-                const {selected_integration: id, organization, project, team, issue_type, assignee, access_token} = this
-                return {id, organization, project, team, issue_type, assignee, access_token}
+                const {selected_integration: id, is_local, organization, project, team, issue_type, assignee, access_token} = this
+                return {id, is_local, organization, project, team, issue_type, assignee, access_token}
             }
         },
         clear_data() {
@@ -45,14 +54,14 @@ const AzureDevopsToggle = {
             this.$emit('clear_data')
         },
         set_data(data) {
-            const {id, organization, project, team, issue_type, assignee, access_token} = data
+            const {id, is_local, organization, project, team, issue_type, assignee, access_token} = data
             this.organization = organization
             this.project = project
             this.team = team
             this.issue_type = issue_type
             this.assignee = assignee
             this.access_token = access_token
-            this.$emit('set_data', {id})
+            this.$emit('set_data', {id, is_local})
         },
 
         initialState: () => ({
@@ -67,47 +76,41 @@ const AzureDevopsToggle = {
         })
     },
     template: `
-     <div class="form-group">
-                <h9>Organization</h9>
-                <input type="text" v-model="organization" class="form-control form-control-alternative"
-                   placeholder=""
-                >
-                     <h9>Project</h9>
-                <input type="text" v-model="project" class="form-control form-control-alternative"
-                         placeholder=""
-                       
-                >
-               
-                <h9> Team
-                    <h13>(optional)</h13> 
-                </h9>
-              
-                <input type="text" class="form-control form-control-alternative"
-                       placeholder=""
-                       v-model="team"
-                       
-                >
-                
-                <h9>
-                    Issue type
-                    <h13>(optional)</h13>
-                </h9>
-                <input type="text" class="form-control form-control-alternative"
-                       v-model="issue_type"
-                       placeholder=""
-                     
-                >
-                
-                <h9>
-                Assignee
-                    <h13>(optional)</h13>
-                </h9>
-                    <input type="text" class="form-control form-control-alternative"
-                       v-model="assignee"
-                       placeholder=""
-                >
-     </div>
-    `
+<div class="form-group">
+    <h9>Organization</h9>
+    <input type="text" v-model="organization" class="form-control form-control-alternative"
+       placeholder=""
+       >
+    <h9>Project</h9>
+    <input type="text" v-model="project" class="form-control form-control-alternative"
+       placeholder=""
+       >
+    <h9>
+       Team
+       <h13>(optional)</h13>
+    </h9>
+    <input type="text" class="form-control form-control-alternative"
+       placeholder=""
+       v-model="team"
+       >
+    <h9>
+       Issue type
+       <h13>(optional)</h13>
+    </h9>
+    <input type="text" class="form-control form-control-alternative"
+       v-model="issue_type"
+       placeholder=""
+       >
+    <h9>
+       Assignee
+       <h13>(optional)</h13>
+    </h9>
+    <input type="text" class="form-control form-control-alternative"
+       v-model="assignee"
+       placeholder=""
+       >
+ </div>
+ `
 }
 
 register_component('azure-devops-toggle', AzureDevopsToggle)

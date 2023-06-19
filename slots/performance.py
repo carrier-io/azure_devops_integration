@@ -10,7 +10,7 @@ class Slot:
         if payload is None:
             payload = {}
         project_id = self.context.rpc_manager.call.project_get_id()
-        integrations = context.rpc_manager.call.integrations_get_project_integrations_by_name(
+        integrations = context.rpc_manager.call.integrations_get_all_integrations_by_name(
             project_id,
             Slot.integration_name
         )
@@ -34,7 +34,7 @@ class Slot:
         if payload is None:
             payload = {}
         project_id = self.context.rpc_manager.call.project_get_id()
-        integrations = context.rpc_manager.call.integrations_get_project_integrations_by_name(
+        integrations = context.rpc_manager.call.integrations_get_all_integrations_by_name(
             project_id,
             Slot.integration_name
         )

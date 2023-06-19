@@ -37,7 +37,6 @@ class Module(module.ModuleModel):
         self.descriptor.init_blueprint()
         self.descriptor.init_slots()
         self.descriptor.init_rpcs()
-        log.info('Must be None : %s', self.context.rpc_manager.call.azure_devops_created_or_updated({}))
 
         # # Register template slot callback
         # self.context.slot_manager.register_callback(f"integration_card_{self.descriptor.name}", render_integration_card)

@@ -39,8 +39,8 @@ class SecurityTestModel(BaseModel):
     access_token: Union[SecretField, str]
     team: None
     issue_type: None
-    # other_fields: str
     assignee: str
+    is_local: bool
 
 
 class PerformanceBackendTestModel(SecurityTestModel):
