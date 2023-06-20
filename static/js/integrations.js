@@ -10,8 +10,9 @@ const AzureDevopsIntegration = {
         @drop.prevent="modal_style = {'height': '100px', 'border': ''}"
 >
     <ModalDialog
-            v-model:description="description"
+            v-model:name="config.name"
             v-model:is_default="is_default"
+            v-model:is_shared="config.is_shared"
             @update="update"
             @create="create"
             :display_name="display_name"
@@ -86,7 +87,7 @@ const AzureDevopsIntegration = {
         </template>
         <template #footer>
             <test-connection-button
-                    :apiPath="api_base + 'check_settings/' + pluginName"
+                    :apiPath="this.$root.build_api_url('integrations', 'check_settings') + '/' + pluginName"
                     :error="error.check_connection"
                     :body_data="body_data"
                     v-model:is_fetching="is_fetching"
@@ -107,9 +108,6 @@ const AzureDevopsIntegration = {
         })
     },
     computed: {
-        apiPath() {
-            return this.api_base + 'integration/'
-        },
         project_id() {
             return getSelectedProjectId()
         },
@@ -125,9 +123,24 @@ const AzureDevopsIntegration = {
                 description,
                 is_default,
                 project_id,
-                status
+                status,
+                config,
+                mode
             } = this
-            return {organization, project, access_token, team, issue_type, assignee, custom_fields, description, is_default, project_id, status}
+            return {
+                organization, 
+                project, 
+                access_token, 
+                team, issue_type, 
+                assignee, 
+                custom_fields, 
+                description, 
+                is_default, 
+                project_id, 
+                status,
+                config,
+                mode
+            }
         },
 
         modal() {
@@ -147,17 +160,21 @@ const AzureDevopsIntegration = {
             })
         },
         handleEdit(data) {
-            const {description, is_default, id, settings} = data
-            this.load({...settings, description, is_default, id})
+            const {config, is_default, id, settings} = data
+            this.load({...settings, config, is_default, id})
             this.modal.modal('show')
         },
         handleDelete(id) {
             this.load({id})
             this.delete()
         },
+        handleSetDefault(id, local=true) {
+            this.load({id})
+            this.set_default(local)
+        },
         create() {
             this.is_fetching = true
-            fetch(this.apiPath + this.pluginName, {
+            fetch(this.api_url + this.pluginName, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(this.body_data)
@@ -186,7 +203,7 @@ const AzureDevopsIntegration = {
         },
         update() {
             this.is_fetching = true
-            fetch(this.apiPath + this.id, {
+            fetch(this.api_url + this.id, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(this.body_data)
@@ -203,7 +220,7 @@ const AzureDevopsIntegration = {
         },
         delete() {
             this.is_fetching = true
-            fetch(this.apiPath + this.id, {
+            fetch(this.api_url + this.project_id + '/' + this.id, {
                 method: 'DELETE',
             }).then(response => {
                 this.is_fetching = false
@@ -224,6 +241,27 @@ const AzureDevopsIntegration = {
                 }
             })
         },
+        async set_default(local) {
+            this.is_fetching = true
+            try {
+                const resp = await fetch(this.api_url + this.project_id + '/' + this.id, {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({local})
+                })
+                if (resp.ok) {
+                    this.$emit('update', {...this.$data, section_name: this.section_name})
+                } else {
+                    const error_data = await resp.json()
+                    this.handleError(error_data)
+                }
+            } catch (e) {
+                console.error(e)
+                showNotify('ERROR', 'Error setting as default')
+            } finally {
+                this.is_fetching = false
+            }
+        },
 
         initialState: () => ({
             modal_style: {'height': '100px', 'border': ''},
@@ -241,9 +279,10 @@ const AzureDevopsIntegration = {
             error: {},
             id: null,
             pluginName: 'azure_devops',
-
-            api_base: '/api/v1/integrations/',
             status: integration_status.success,
+            config: {},
+            api_url: V.build_api_url('integrations', 'integration') + '/',
+            mode: V.mode
         })
     }
 }
