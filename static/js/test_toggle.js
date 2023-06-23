@@ -45,8 +45,14 @@ const AzureDevopsToggle = {
     methods: {
         get_data() {
             if (this.is_selected) {
-                const {selected_integration: id, is_local, organization, project, team, issue_type, assignee, access_token} = this
-                return {id, is_local, organization, project, team, issue_type, assignee, access_token}
+                const {
+                    selected_integration: id, is_local, organization, project, 
+                    team, issue_type, assignee, access_token
+                } = this
+                return {
+                    id, is_local, project_id: this.integration_data.project_id, 
+                    organization, project, team, issue_type, assignee, access_token
+                }
             }
         },
         clear_data() {

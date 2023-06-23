@@ -41,6 +41,7 @@ class SecurityTestModel(BaseModel):
     issue_type: None
     assignee: str
     is_local: bool
+    project_id: Optional[int]
 
 
 class PerformanceBackendTestModel(SecurityTestModel):
