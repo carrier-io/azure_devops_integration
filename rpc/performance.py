@@ -9,7 +9,7 @@ from ..models.integration_pd import PerformanceBackendTestModel, PerformanceUiTe
 
 
 class RPC:
-    integration_name = 'azure_devops'
+    integration_name = 'azure_devops_integration'
 
     @web.rpc(f'backend_performance_test_create_integration_validate_{integration_name}')
     @rpc_tools.wrap_exceptions(ValidationError)
