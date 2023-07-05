@@ -278,7 +278,7 @@ const AzureDevopsIntegration = {
             is_fetching: false,
             error: {},
             id: null,
-            pluginName: 'azure_devops',
+            pluginName: 'azure_devops_integration',
             status: integration_status.success,
             config: {},
             api_url: V.build_api_url('integrations', 'integration') + '/',

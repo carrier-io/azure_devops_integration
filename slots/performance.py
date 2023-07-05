@@ -2,7 +2,7 @@ from pylon.core.tools import web
 
 
 class Slot:
-    integration_name = 'azure_devops'
+    integration_name = 'azure_devops_integration'
     section_name = 'reporters'
 
     @web.slot(f'backend_performance_{section_name}_content')
