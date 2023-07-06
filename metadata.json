@@ -1,6 +1,6 @@
 {
   "name": "Carrier Azure Devops Plugin",
-  "version": "0.1",
+  "version": "0.2",
   "depends_on": ["integrations", "shared"],
   "init_after": []
 }

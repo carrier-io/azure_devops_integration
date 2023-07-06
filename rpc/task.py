@@ -5,7 +5,7 @@ from tools import rpc_tools
 
 
 class RPC:
-    integration_name = 'azure_devops'
+    integration_name = 'azure_devops_integration'
 
     @web.rpc(f'{integration_name}_created_or_updated')
     @rpc_tools.wrap_exceptions(RuntimeError)

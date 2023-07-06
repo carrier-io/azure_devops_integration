@@ -10,7 +10,7 @@ from ...integrations.models.pd.integration import SecretField
 
 
 class RPC:
-    integration_name = 'azure_devops'
+    integration_name = 'azure_devops_integration'
 
     @web.rpc(f'dusty_config_{integration_name}')
     @rpc_tools.wrap_exceptions(RuntimeError)
@@ -36,7 +36,7 @@ class RPC:
             "custom_fields": integration.settings.get("custom_fields"),
             "assignee": integration.settings.get("assignee")
         }
-        return "azure_devops", result
+        return "azure_devops_integration", result
 
     @web.rpc(f'security_test_create_integration_validate_{integration_name}')
     @rpc_tools.wrap_exceptions(ValidationError)
