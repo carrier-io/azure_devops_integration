@@ -36,7 +36,7 @@ class RPC:
             "custom_fields": integration.settings.get("custom_fields"),
             "assignee": integration.settings.get("assignee")
         }
-        return "azure_devops_integration", result
+        return "azure_devops", result
 
     @web.rpc(f'security_test_create_integration_validate_{integration_name}')
     @rpc_tools.wrap_exceptions(ValidationError)
